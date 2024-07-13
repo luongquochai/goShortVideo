@@ -71,7 +71,7 @@ go get -u github.com/aws/aws-sdk-go
 ```
 
 3. Create a .env file in the root directory:
-```json
+```
 DATABASE_URL=your_postgres_connection_string
 JWT_SECRET=your_jwt_secret_key
 AWS_ACCESS_KEY_ID=your_aws_access_key_id
