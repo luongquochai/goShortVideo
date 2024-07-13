@@ -14,6 +14,18 @@ run:
 	@go run cmd/api/main.go
 
 
+postgres:
+	docker run --name postgres -p 5432:5432 -e POSTGRES_USER=root -e POSTGRES_PASSWORD=secret -d postgres:15-alpine
+
+start_docker:
+	sudo docker start postgres
+
+createdb:
+	docker exec -it postgres createdb --username=root --owner=root shortvideo
+
+dropdb:
+	docker exec -it postgres dropdb shortvideo
+
 # Create DB container
 # docker-run:
 # 	@if docker compose up 2>/dev/null; then \
