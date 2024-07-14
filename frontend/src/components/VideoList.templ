@@ -1,12 +1,12 @@
-<div id="videoList" hx-get="/api/videos" hx-trigger="load">
-    <h2 class="text-2xl font-bold mb-4">Videos</h2>
-    <ul>
-        {{ range .Videos }}
-        <li class="border-b py-2">
-            <p>{{ .Title }}</p>
-            <video src="{{ .URL }}" controls class="my-2 w-full"></video>
-            <p>{{ .Description }}</p>
-        </li>
-        {{ end }}
-    </ul>
+{{range .Videos}}
+<div class="bg-white shadow-md rounded-lg overflow-hidden mb-4">
+    <video id="video-{{.ID}}" class="w-full max-w-full" controls>
+        <source src="/{{.FilePath}}" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    <div class="p-4">
+        <h3 class="text-lg font-bold">{{.Description}}</h3>
+        <img src="/{{.ThumbnailPath}}" alt="Thumbnail" class="w-full h-auto mt-2">
+    </div>
 </div>
+{{end}}

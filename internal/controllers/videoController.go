@@ -38,5 +38,7 @@ func GetVideos(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"videos": videos})
+	c.HTML(http.StatusOK, "VideoList.templ", gin.H{
+		"Videos": videos,
+	})
 }

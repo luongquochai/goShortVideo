@@ -10,7 +10,9 @@ import (
 
 func SetupRoutes(r *gin.Engine) {
 	// Serve static files
-	r.Static("/assets", "./frontend/src/assets")
+	r.Static("/public", "./frontend/public/")
+	r.Static("/icon", "./frontend/src/icon")
+	r.Static("/videos", "./videos")
 
 	// Load HTML templates
 	r.LoadHTMLGlob("frontend/src/**/*.templ")
@@ -25,12 +27,12 @@ func SetupRoutes(r *gin.Engine) {
 		api.POST("/register", controllers.Register)
 		api.POST("/login", controllers.Login)
 		api.GET("/videos", controllers.GetVideos)
-		api.POST("/upload", controllers.UploadVideo)
+		// api.POST("/upload", controllers.UploadVideo)
 
 		auth := api.Group("/")
 		auth.Use(middlewares.AuthMiddleware())
 		{
-			// auth.POST("/upload", controllers.UploadVideo)
+			auth.POST("/upload", controllers.UploadVideo)
 
 		}
 	}

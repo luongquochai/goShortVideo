@@ -4,22 +4,93 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Video Platform</title>
-    <link href="/assets/tailwind.css" rel="stylesheet">
+    <link href="/public/tailwind.css" rel="stylesheet">
     <script src="https://unpkg.com/alpinejs" defer></script>
-    <script src="https://unpkg.com/htmx.org/dist/htmx.js" defer></script>
 </head>
 <body class="bg-gray-100">
-    <div id="app" class="container mx-auto p-4">
+    <!-- Navigation Bar -->
+    <nav class="bg-black text-white p-4 flex justify-between items-center">
+        <!-- Left Section: Logo -->
+        <a href="/" class="flex items-center">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4jgDE8dYdwXdT9_oBXdCjjTu96caAkLd1aQ&s" alt="Logo" class="h-12 w-auto mr-2"> <!-- Adjust height here -->
+        </a>
+        
+        <!-- Middle Section: Search Bar -->
+        <div class="flex-grow flex justify-center items-center">
+            <input type="text" placeholder="Search" class="w-full max-w-md px-4 py-2 rounded-lg text-black">
+        </div>
+        
+        <!-- Right Section: Login Button -->
+        <div class="flex items-center">
+            <!-- HTMX Trigger for Login Form -->
+            <button id="loginBtn" hx-get="/login-form" hx-trigger="click" class="bg-red-500 text-white font-bold py-2 px-4 rounded-lg">
+                Login
+            </button>
+            <!-- HTMX Target for Login Form -->
+            <div id="loginFormTarget" class="mt-2"></div>
+            
+            
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mx-auto p-4">
         <h1 class="text-3xl font-bold mb-8">Welcome to Your Video Platform</h1>
-        <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-            <div class="bg-white p-4 rounded-lg shadow-md">
-                <h2 class="text-2xl font-bold mb-4">Upload Video</h2>
-                {{ template "VideoUploadForm.templ" . }}
+        <!-- Video List (to be populated dynamically) -->
+        <div id="videoList" hx-get="/api/videos" hx-trigger="load">
+            {{range .Videos}}
+            <div class="bg-white shadow-md rounded-lg overflow-hidden mb-4">
+                <video id="video-{{.ID}}" class="w-full max-w-full" controls>
+                    <source src="/{{.FilePath}}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <div class="p-4">
+                    <h3 class="text-lg font-bold">{{.Description}}</h3>
+                    <img src="/{{.ThumbnailPath}}" alt="Thumbnail" class="w-full h-auto mt-2">
+                </div>
             </div>
-            <div class="bg-white p-4 rounded-lg shadow-md">
-                {{ template "VideoList.templ" . }}
-            </div>
+            {{end}}
         </div>
     </div>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/htmx.org/dist/htmx.js" defer></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Function to check if an element is in viewport
+            function isInViewport(element) {
+                const rect = element.getBoundingClientRect();
+                return (
+                    rect.top >= 0 &&
+                    rect.left >= 0 &&
+                    rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+                    rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+                );
+            }
+
+            // Function to handle video autoplay
+            function handleVideoAutoplay() {
+                const videos = document.querySelectorAll("video");
+
+                videos.forEach(video => {
+                    if (isInViewport(video)) {
+                        if (video.paused) {
+                            video.play();
+                        }
+                    } else {
+                        if (!video.paused) {
+                            video.pause();
+                        }
+                    }
+                });
+            }
+
+            // Attach event listener for scroll event
+            window.addEventListener("scroll", handleVideoAutoplay);
+
+            // Initial check on page load
+            handleVideoAutoplay();
+        });
+    </script>
 </body>
 </html>

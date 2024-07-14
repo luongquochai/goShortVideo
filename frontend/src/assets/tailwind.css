@@ -1,3 +1,32 @@
+/* Your Tailwind CSS styles */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+/* Override Tailwind utility classes for the navbar */
+.navbar {
+    /* Example: Increase padding on the navbar */
+    color: black;
+    padding: 1rem;
+}
+
+/* Example: Style the logo */
+.navbar .logo {
+    /* Your custom styles */
+    font-size: 1.5rem;
+}
+
+/* Example: Style navigation links */
+.navbar .nav-links a {
+    /* Your custom styles */
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    color: white;
+}
+
+/* Example: Style user authentication links */
+.navbar .auth-links a {
+    /* Your custom styles */
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    color: white;
+}
