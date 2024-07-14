@@ -1,0 +1,45 @@
+# Config file for Air
+[build]
+# Working directory
+working_dir = "."
+# Build output
+bin = "tmp/main"
+# Build command
+cmd = "go build -o tmp/main cmd/api/main.go"
+# Command args
+args = []
+# Custom env variables
+include_env_file = true
+
+[dev]
+# Use polling (useful in VMs)
+polling = false
+# Force recursive watching
+recursive = false
+# Run Air in debug mode
+debug = false
+# Set log level
+log_level = "info"
+# Environment variables
+include_env_file = true
+
+# Watch these directories for changes
+[watch]
+# Path to watch
+dir = "."
+# Files to include
+include = [
+  "**/*.go",
+  "**/*.html",
+  "**/*.temple",
+]
+# Files to exclude
+exclude = [
+  "vendor",
+  "**/*.test",
+  "**/frontend/**",
+]
+
+# File watching commands
+[log]
+output = "tmp/build-errors.log"

@@ -11,8 +11,14 @@ build:
 
 # Run the application
 run:
-	@go run cmd/api/main.go
+	air
 
+run_frontend:
+	cd frontend && npm run build:css
+
+
+start_service_docker:
+	sudo /etc/init.d/docker start
 
 postgres:
 	docker run --name postgres -p 5432:5432 -e POSTGRES_USER=root -e POSTGRES_PASSWORD=secret -d postgres:15-alpine

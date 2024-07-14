@@ -1,3 +1,4 @@
 videos/
 thumbnails/
 .env
+node_modules/

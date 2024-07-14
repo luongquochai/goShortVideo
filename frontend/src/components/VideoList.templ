@@ -1,0 +1,12 @@
+<div id="videoList" hx-get="/api/videos" hx-trigger="load">
+    <h2 class="text-2xl font-bold mb-4">Videos</h2>
+    <ul>
+        {{ range .Videos }}
+        <li class="border-b py-2">
+            <p>{{ .Title }}</p>
+            <video src="{{ .URL }}" controls class="my-2 w-full"></video>
+            <p>{{ .Description }}</p>
+        </li>
+        {{ end }}
+    </ul>
+</div>

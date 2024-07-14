@@ -1,0 +1,7 @@
+<div id="userProfile" hx-get="/api/user/profile" hx-trigger="load">
+    <h2 class="text-2xl font-bold mb-4">User Profile</h2>
+    <div class="border p-4 rounded-lg">
+        <p><strong>Name:</strong> {{ .Name }}</p>
+        <p><strong>Email:</strong> {{ .Email }}</p>
+    </div>
+</div>

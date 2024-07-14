@@ -11,6 +11,7 @@ func main() {
 	config.InitDB()
 
 	r := gin.Default()
+
 	routes.SetupRoutes(r)
 	r.Run() // default to localhost:8080
 }
