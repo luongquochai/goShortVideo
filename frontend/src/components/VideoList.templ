@@ -1,6 +1,6 @@
 {{range .Videos}}
 <div class="bg-white shadow-md rounded-lg overflow-hidden mb-4">
-    <video id="video-{{.ID}}" class="w-full max-w-full" controls>
+    <video id="video-{{.ID}}" class="w-full max-w-full" autoplay muted controls>
         <source src="/{{.FilePath}}" type="video/mp4">
         Your browser does not support the video tag.
     </video>

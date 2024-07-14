@@ -38,59 +38,44 @@
         <h1 class="text-3xl font-bold mb-8">Welcome to Your Video Platform</h1>
         <!-- Video List (to be populated dynamically) -->
         <div id="videoList" hx-get="/api/videos" hx-trigger="load">
-            {{range .Videos}}
-            <div class="bg-white shadow-md rounded-lg overflow-hidden mb-4">
-                <video id="video-{{.ID}}" class="w-full max-w-full" controls>
-                    <source src="/{{.FilePath}}" type="video/mp4">
-                    Your browser does not support the video tag.
-                </video>
-                <div class="p-4">
-                    <h3 class="text-lg font-bold">{{.Description}}</h3>
-                    <img src="/{{.ThumbnailPath}}" alt="Thumbnail" class="w-full h-auto mt-2">
-                </div>
+            <!-- HTMX Target for Video List -->
+            <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+                
             </div>
-            {{end}}
         </div>
     </div>
 
     <!-- Scripts -->
     <script src="https://unpkg.com/htmx.org/dist/htmx.js" defer></script>
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            // Function to check if an element is in viewport
-            function isInViewport(element) {
-                const rect = element.getBoundingClientRect();
-                return (
-                    rect.top >= 0 &&
-                    rect.left >= 0 &&
-                    rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-                    rect.right <= (window.innerWidth || document.documentElement.clientWidth)
-                );
+        // Handle HTMX responses for login form
+        document.body.addEventListener('htmx:afterRequest', (event) => {
+            const targetId = event.detail.target.getAttribute('id');
+            if (targetId === 'loginFormTarget') {
+                document.getElementById(targetId).classList.remove('hidden');
             }
-
-            // Function to handle video autoplay
-            function handleVideoAutoplay() {
-                const videos = document.querySelectorAll("video");
-
-                videos.forEach(video => {
-                    if (isInViewport(video)) {
-                        if (video.paused) {
-                            video.play();
-                        }
-                    } else {
-                        if (!video.paused) {
-                            video.pause();
-                        }
-                    }
-                });
-            }
-
-            // Attach event listener for scroll event
-            window.addEventListener("scroll", handleVideoAutoplay);
-
-            // Initial check on page load
-            handleVideoAutoplay();
         });
+
+        // Autoplay videos when they come into view
+        const videoList = document.getElementById('videoList');
+        if (videoList) {
+            videoList.addEventListener('htmx:afterSwap', () => {
+                const videos = document.querySelectorAll('video');
+                videos.forEach(video => {
+                    let observer = new IntersectionObserver((entries, observer) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                entry.target.play();
+                                observer.unobserve(entry.target);
+                            }
+                        });
+                    }, { threshold: 0.5 });
+
+                    observer.observe(video);
+                });
+            });
+        }
+        
     </script>
 </body>
 </html>
